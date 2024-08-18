@@ -2,12 +2,15 @@ import { Footer } from "./components/Footer";
 import { NavBar } from "./components/NavBar";
 import { Home } from "./pages/Home";
 import "./App.css";
+import { useState } from "react";
 
 function App() {
+  const [inputValue, setInputValue] = useState();
   return (
     <>
-      <NavBar />
-      <Home />
+      <NavBar inputValue={inputValue} setInputValue={setInputValue} />
+      <Home inputValue={inputValue} />
+
       <Footer />
     </>
   );
