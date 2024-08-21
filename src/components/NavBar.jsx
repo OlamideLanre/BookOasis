@@ -1,4 +1,8 @@
-import { UserOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  ShoppingCartOutlined,
+  DownOutlined,
+} from "@ant-design/icons";
 
 export const NavBar = ({ inputValue, setInputValue }) => {
   function handleInput(e) {
@@ -28,7 +32,7 @@ export const NavBar = ({ inputValue, setInputValue }) => {
               role="button"
               className="btn btn-ghost rounded-btn text-green-500"
             >
-              Category
+              Category <DownOutlined />
             </div>
             <ul
               tabIndex={0}
