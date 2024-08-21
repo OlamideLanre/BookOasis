@@ -1,16 +1,21 @@
 import { Footer } from "./components/Footer";
 import { NavBar } from "./components/NavBar";
+import { BookDetails } from "./pages/BookDetails";
 import { Home } from "./pages/Home";
 import "./App.css";
 import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+// import { LayoutComponent } from "./components/LayoutComponent";
 
 function App() {
   const [inputValue, setInputValue] = useState();
   return (
     <>
       <NavBar inputValue={inputValue} setInputValue={setInputValue} />
-      <Home inputValue={inputValue} />
-
+      <Routes>
+        <Route index element={<Home inputValue={inputValue} />} />
+        <Route path="/bookdetails/:bookID" element={<BookDetails />} />
+      </Routes>
       <Footer />
     </>
   );
