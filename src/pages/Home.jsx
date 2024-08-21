@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-
 import "./Home.css";
 export const Home = ({ inputValue }) => {
   const [loading, setLoading] = useState(true);
@@ -12,11 +11,10 @@ export const Home = ({ inputValue }) => {
   myHeaders.append("Accept", "application/json");
   myHeaders.append(
     "x-apihub-key",
-    "QwZjDpWWQgfcvJSk1dedS7CU1i4OYK71P2dq46Ds89MzLS8v0R"
+    "ht-Y1oRt4gDHzJDgAbGKXdQge6JxueERvp-1hc47mpwJa6A6uI"
   );
   myHeaders.append("x-apihub-host", "Big-Book-API.allthingsdev.co");
   myHeaders.append("x-apihub-endpoint", "119056b9-68ee-424f-ad75-95f2664f9157");
-
   const requestOptions = {
     method: "GET",
     headers: myHeaders,
@@ -33,7 +31,6 @@ export const Home = ({ inputValue }) => {
       if (bookDetails != []) {
         setLoading(false);
         setErrMesg(false);
-        // console.log(bookDetails);
       }
       if (!response.ok) {
         console.log(
@@ -51,6 +48,7 @@ export const Home = ({ inputValue }) => {
       console.log("error msg: " + error);
     }
   };
+
   useEffect(() => {
     getBooks();
   }, [inputValue]);
@@ -73,7 +71,7 @@ export const Home = ({ inputValue }) => {
                     className="ml-auto mr-auto "
                   />
                   <h2 className="text-black font-semibold">{book.title}</h2>
-                  <p>NGN: 20,000</p>
+                  <p>$ {book.title.length}</p>
                   <div className="mt-3">
                     <Link
                       key={book.id}
