@@ -20,10 +20,11 @@ export const NavBar = ({ inputValue, setInputValue }) => {
           <div className="form-control">
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search e.g 'science'"
               value={inputValue}
               onChange={handleInput}
-              className="input input-bordered w-24 md:w-auto bg-gray-100"
+              className=" input-bordered w-24 md:w-auto bg-gray-100 pr-24 pl-5 py-2 rounded-md"
+              title="Enter a key word e.g love, science etc"
             />
           </div>
           <div className="dropdown dropdown-end">
