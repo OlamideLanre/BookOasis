@@ -3,6 +3,7 @@ import {
   ShoppingCartOutlined,
   DownOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 export const NavBar = ({ inputValue, setInputValue }) => {
   function handleInput(e) {
@@ -13,7 +14,13 @@ export const NavBar = ({ inputValue, setInputValue }) => {
     <>
       <div className="navbar bg-white border-b-2">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl text-green-500">BookOasis</a>
+          <Link
+            className="btn btn-ghost text-xl text-green-500"
+            to="/"
+            title="home"
+          >
+            BookOasis
+          </Link>
         </div>
 
         <div className="flex-none gap-2">
@@ -53,10 +60,14 @@ export const NavBar = ({ inputValue, setInputValue }) => {
               </li>
             </ul>
           </div>
+          <Link
+            to="/cart"
+            className="btn btn-ghost btn-circle avatar cartIcon"
+            title="cart"
+          >
+            <ShoppingCartOutlined />
+          </Link>
           <div className="dropdown dropdown-end">
-            <div className="btn btn-ghost btn-circle avatar cartIcon">
-              <ShoppingCartOutlined />
-            </div>
             <div
               tabIndex={0}
               role="button"
