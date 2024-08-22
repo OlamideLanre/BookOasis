@@ -11,7 +11,7 @@ export const BookDetails = () => {
   myHeaders.append("Accept", "application/json");
   myHeaders.append(
     "x-apihub-key",
-    "wjHb-wXzY1WzRJXe9hp05FsNqBg8Pn98GnTE1MisU29BUghC9Y"
+    "ht-Y1oRt4gDHzJDgAbGKXdQge6JxueERvp-1hc47mpwJa6A6uI"
   );
   myHeaders.append("x-apihub-host", "Big-Book-API.allthingsdev.co");
   myHeaders.append("x-apihub-endpoint", "119056b9-68ee-424f-ad75-95f2664f9157");
@@ -29,20 +29,9 @@ export const BookDetails = () => {
       let response = await fetch(INFO_URL, requestOptions);
       let data = await response.json();
       setBookInfo(data);
-      // if (!response.ok) {
-      //   console.log("response not okay: " + response.status);
-      // }
       if (bookInfo != []) {
         setLoading(false);
-        console.log("loading");
-        console.log(bookInfo);
       }
-
-      // console.log(data);
-      // console.log(bookID);
-      // console.log(response);
-      // console.log(INFO_URL);
-      // console.log(bookInfo);
     } catch (error) {
       console.log("an error occured: " + error);
     }
