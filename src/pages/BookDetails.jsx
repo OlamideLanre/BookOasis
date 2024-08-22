@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./BookDetails.css";
-import { LoadingOutlined, ShoppingOutlined } from "@ant-design/icons";
+import {
+  DollarOutlined,
+  LoadingOutlined,
+  ShoppingOutlined,
+} from "@ant-design/icons";
 
 export const BookDetails = () => {
   const { bookID } = useParams();
   const [bookInfo, setBookInfo] = useState();
   const [loading, setLoading] = useState(true);
+  const [cartItems, setCartItems] = useState(() => {
+    // Retrieve cart items from localStorage if available
+    const savedCartItems = localStorage.getItem("cartItems");
+    return savedCartItems ? JSON.parse(savedCartItems) : [];
+  });
+
+  const CART_ITEMS = [];
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
   myHeaders.append(
@@ -40,6 +51,20 @@ export const BookDetails = () => {
     getDetails();
   }, [bookID]);
 
+  function AddToCart() {
+    let newItem = {
+      ID: bookInfo.id,
+      Title: bookInfo.title,
+      Cover: bookInfo.image,
+      Price: bookInfo.title.length,
+    };
+    CART_ITEMS.push(newItem);
+    const updatedCart = [...cartItems, newItem];
+    setCartItems(updatedCart);
+    // Save the updated cart to localStorage to keep the data persistent
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+    console.log(CART_ITEMS);
+  }
   return (
     <>
       <div className="parent">
@@ -67,9 +92,16 @@ export const BookDetails = () => {
                 <p className="font-semibold text-black">
                   Price: ${bookInfo.title.length}
                 </p>
-                <button className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold">
+                <button
+                  className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold"
+                  onClick={AddToCart}
+                >
                   Add to cart
                   <ShoppingOutlined className="ml-2" />
+                </button>
+                <button className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold ml-3">
+                  Buy now
+                  <DollarOutlined className="ml-2" />
                 </button>
               </div>
             </div>

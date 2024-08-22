@@ -5,6 +5,7 @@ import { Home } from "./pages/Home";
 import "./App.css";
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
+import { Cart } from "./pages/Cart";
 // import { LayoutComponent } from "./components/LayoutComponent";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route index element={<Home inputValue={inputValue} />} />
         <Route path="/bookdetails/:bookID" element={<BookDetails />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
       <Footer />
     </>

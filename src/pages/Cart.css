@@ -1,0 +1,32 @@
+.flex-parent{
+    margin: 2em ;
+    max-width: 500px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.flex-container .flex-items{
+    display: flex;
+    column-gap : 1em;
+    border-bottom: solid 1px rgb(224, 219, 219);
+    padding: 0.7em;
+}   
+.flex-items p{
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.flex-items .quantity-ctrl{
+    color: black;
+    /* background: rgb(94, 199, 94); */
+    padding: 0px 1em;
+    border-radius: 2em;
+    border: solid 1px green;
+}
+.flex-items h2{
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-bottom: 5px;
+}
+.flex-items img{
+    width: 80px;
+    object-fit: contain;
+}
