@@ -80,15 +80,6 @@ export const Home = ({ inputValue }) => {
                     >
                       View
                     </Link>
-                    {/* <a
-                      href=""
-                      className="bg-black text-white px-8 py-2 rounded-md"
-                    >
-                      View
-                    </a> */}
-                    {/* <button className="bg-green-400 px-5 py-2 rounded-lg text-white">
-                    Add to cart
-                  </button> */}
                   </div>
                 </div>
               </div>
