@@ -1,22 +1,28 @@
 import React, { useContext } from "react";
-import { Route } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+import { useAuth } from "./AuthContext";
+const PrivateRoute = ({ component}) => {
+  const { currentUser } = useAuth;
 
-const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
-  const { currentUser } = useContext(AuthContext);
-  return (
-    <Route
-      {...rest}
-      render={(routeProps) =>
-        !!currentUser ? (
-          <RouteComponent {...routeProps} />
-        ) : (
-          <Navigate to={"/login"} />
-        )
-      }
-    />
-  );
+  if (!currentUser) {
+    // If user is not authenticated, redirect to sign-in page
+    return <Navigate to="/signin" />;
+  }
+
+  // If user is authenticated, render the children components
+  return children;
+  // return (
+  //   <Route
+  //     {...rest}
+  //     render={(routeProps) =>
+  //       !!currentUser ? (
+  //         <RouteComponent {...routeProps} />
+  //       ) : (
+  //         <Navigate to={"/login"} />
+  //       )
+  //     }
+  //   />
+  // );
 };
 
 export default PrivateRoute;

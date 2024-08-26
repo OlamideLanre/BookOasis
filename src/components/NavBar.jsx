@@ -4,12 +4,31 @@ import {
   DownOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useAuth } from "./AuthContext";
+import usericom from "../assets/user_40px.png";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
 
 export const NavBar = ({ inputValue, setInputValue }) => {
+  const navigate = useNavigate();
+
   function handleInput(e) {
     setInputValue(e.target.value);
     console.log(inputValue);
   }
+  const { currentUser } = useAuth();
+  const signout = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        navigate("/signin");
+      })
+      .catch((error) => {
+        alert("AN ERROR OCCURED : " + error)
+      });
+  };
   return (
     <>
       <div className="navbar bg-white border-b-2">
@@ -79,18 +98,18 @@ export const NavBar = ({ inputValue, setInputValue }) => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu items-center menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-60 p-2 shadow"
             >
-              <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
+              <div className="avatar online">
+                <div className="w-24 rounded-full">
+                  <img src={usericom} />
+                </div>
+              </div>
+
+              <li className=" bg-green-300 my-2 py-1 px-2 rounded-lg text-wrap whitespace-normal break-words overflow-auto">
+                {currentUser ? currentUser.email : "None"}
               </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
+              <li onClick={signout}>
                 <a>Logout</a>
               </li>
             </ul>

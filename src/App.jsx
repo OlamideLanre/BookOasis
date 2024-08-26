@@ -31,9 +31,9 @@ function App() {
         <NavBar inputValue={inputValue} setInputValue={setInputValue} />
       )}
       <Routes>
-        <Route index path="/signin" element={<Signin />} />
+        <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<Home inputValue={inputValue} />} />
+        <Route index path="/" element={<Home inputValue={inputValue} />} />
 
         <Route
           path="/bookdetails/:bookID"

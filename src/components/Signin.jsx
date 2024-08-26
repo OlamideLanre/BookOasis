@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { auth, provider } from "../Firebase";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, getAuth } from "firebase/auth";
 import { signInWithRedirect } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -11,12 +11,14 @@ import book64 from "../assets/book_reading_64px.png";
 import googleicon from "../assets/google_48px.png";
 import Modal from "./Modal";
 const Signin = () => {
+  const auth = getAuth();
+
   const navigate = useNavigate();
 
   const [isError, setIsError] = useState(false);
   const [msg, setmsg] = useState("");
   const [header, setheader] = useState("");
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +37,7 @@ const Signin = () => {
       return;
     }
     signInWithEmailAndPassword(auth, email, password)
-      .then((useCredentials) => {
+      .then((userCredential) => {
         if (!auth.currentUser.emailVerified) {
           signOut(auth);
           setIsError(true);
@@ -43,9 +45,10 @@ const Signin = () => {
           setmsg("Please verify your email before signing in.");
           setLoading(false);
         } else {
-          console.log("Signed in successfully", useCredentials);
+          const user = userCredential.user;
+          console.log("Signed in successfully", userCredential);
           navigate("/cart");
-          console.log(useCredentials);
+          console.log(userCredential);
         }
       })
       .catch((error) => {
@@ -65,16 +68,33 @@ const Signin = () => {
     setIsError(false); // Reset error state before Google sign-in
     setmsg("");
     setheader("");
-    signInWithRedirect(auth, provider)
-      .then((useCredentials) => {
-        console.log(useCredentials);
+
+    signInWithRedirect(auth, provider).catch((error) => {
+      setmsg(error.message);
+      setheader("An Error Occurred");
+      setIsError(true);
+      setLoading(false);
+    });
+  };
+
+  // Use useEffect to handle the result after redirect
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          console.log(result);
+          navigate("/cart"); // Navigate after successful sign-in
+        }
       })
       .catch((error) => {
         setmsg(error.message);
-        setheader("An Error Occured");
+        setheader("An Error Occurred");
         setIsError(true);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  };
+  }, [auth, navigate]);
   const fgpw = () => {
     setmsg("Better Remember That Password o");
     setheader("FORGOT PASSWORD KE !!!");
@@ -154,10 +174,11 @@ const Signin = () => {
 
             <div>
               <button
-                type="submit" disabled={loading}
+                type="submit"
+                disabled={loading}
                 className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
               >
-              {loading ? <LoadingOutlined /> : "Sign In"}
+                {loading ? <LoadingOutlined /> : "Sign In"}
               </button>
             </div>
             <div>
@@ -174,11 +195,11 @@ const Signin = () => {
           <p className="mt-3 text-center text-sm text-gray-500">
             Not a member?
             <Link
-            to="/signup"
-            className="font-semibold leading-6 text-green-500 hover:text-green-500"
-          >
-            Signup Here
-          </Link>
+              to="/signup"
+              className="font-semibold leading-6 text-green-500 hover:text-green-500"
+            >
+              Signup Here
+            </Link>
           </p>
         </div>
       </div>
