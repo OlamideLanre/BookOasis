@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword, signOut, getAuth } from "firebase/auth";
 import { signInWithRedirect } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
+import { GoogleAuthProvider } from "firebase/auth";
 
 import { Link } from "react-router-dom";
 import book64 from "../assets/book_reading_64px.png";
@@ -12,6 +13,7 @@ import googleicon from "../assets/google_48px.png";
 import Modal from "./Modal";
 const Signin = () => {
   const auth = getAuth();
+  const provider = new GoogleAuthProvider();
 
   const navigate = useNavigate();
 
@@ -68,33 +70,18 @@ const Signin = () => {
     setIsError(false); // Reset error state before Google sign-in
     setmsg("");
     setheader("");
+    signInWithRedirect(auth, provider)
+      .then((useCredentials) => {
+        alert(useCredentials);
+        navigate("/cart");
 
-    signInWithRedirect(auth, provider).catch((error) => {
-      setmsg(error.message);
-      setheader("An Error Occurred");
-      setIsError(true);
-      setLoading(false);
-    });
-  };
-
-  // Use useEffect to handle the result after redirect
-  useEffect(() => {
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result) {
-          console.log(result);
-          navigate("/cart"); // Navigate after successful sign-in
-        }
       })
       .catch((error) => {
         setmsg(error.message);
-        setheader("An Error Occurred");
+        setheader("An Error Occured");
         setIsError(true);
-      })
-      .finally(() => {
-        setLoading(false);
       });
-  }, [auth, navigate]);
+  };
   const fgpw = () => {
     setmsg("Better Remember That Password o");
     setheader("FORGOT PASSWORD KE !!!");
@@ -174,11 +161,10 @@ const Signin = () => {
 
             <div>
               <button
-                type="submit"
-                disabled={loading}
+                type="submit" disabled={loading}
                 className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
               >
-                {loading ? <LoadingOutlined /> : "Sign In"}
+              {loading ? <LoadingOutlined /> : "Sign In"}
               </button>
             </div>
             <div>
@@ -195,11 +181,11 @@ const Signin = () => {
           <p className="mt-3 text-center text-sm text-gray-500">
             Not a member?
             <Link
-              to="/signup"
-              className="font-semibold leading-6 text-green-500 hover:text-green-500"
-            >
-              Signup Here
-            </Link>
+            to="/signup"
+            className="font-semibold leading-6 text-green-500 hover:text-green-500"
+          >
+            Signup Here
+          </Link>
           </p>
         </div>
       </div>
