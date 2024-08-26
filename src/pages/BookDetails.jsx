@@ -6,6 +6,8 @@ import {
   LoadingOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const BookDetails = () => {
   const { bookID } = useParams();
@@ -58,12 +60,16 @@ export const BookDetails = () => {
       Cover: bookInfo.image,
       Price: bookInfo.title.length,
     };
-    CART_ITEMS.push(newItem);
-    const updatedCart = [...cartItems, newItem];
-    setCartItems(updatedCart);
-    // Save the updated cart to localStorage to keep the data persistent
-    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-    console.log(CART_ITEMS);
+    if (CART_ITEMS.push(newItem)) {
+      const updatedCart = [...cartItems, newItem];
+      setCartItems(updatedCart);
+      // Save the updated cart to localStorage to keep the data persistent
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      toast("Book added to cart!");
+      console.log(CART_ITEMS);
+    } else {
+      toast("Item not added");
+    }
   }
   return (
     <>
@@ -87,6 +93,12 @@ export const BookDetails = () => {
                 />
               </div>
               <div className="textDiv">
+                <p className="font-semibold">
+                  Subtitle:{" "}
+                  {bookInfo.subtitle
+                    ? bookInfo.subtitle
+                    : "No subtitle available"}
+                </p>
                 <p>Description: {bookInfo.description}</p>
                 <p>Publish date: {bookInfo.publish_date}</p>
                 <p className="font-semibold text-black">
@@ -98,6 +110,7 @@ export const BookDetails = () => {
                 >
                   Add to cart
                   <ShoppingOutlined className="ml-2" />
+                  <ToastContainer position="bottom-right" />
                 </button>
                 <button className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold ml-3">
                   Buy now
