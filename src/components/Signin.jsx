@@ -3,21 +3,37 @@ import { useState } from "react";
 import { auth, provider } from "../Firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { signInWithRedirect } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { LoadingOutlined } from "@ant-design/icons";
 
+import { Link } from "react-router-dom";
 import book64 from "../assets/book_reading_64px.png";
 import googleicon from "../assets/google_48px.png";
 import Modal from "./Modal";
 const Signin = () => {
+  const navigate = useNavigate();
+
   const [isError, setIsError] = useState(false);
   const [msg, setmsg] = useState("");
   const [header, setheader] = useState("");
   const [email, setEmail] = useState();
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const Signin = (e) => {
     e.preventDefault();
+    setLoading(true);
+
     setIsError(false);
     setmsg("");
     setheader("");
+    if (!email.includes("@")) {
+      setIsError(true);
+      setheader("Invalid Email");
+      setmsg("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
     signInWithEmailAndPassword(auth, email, password)
       .then((useCredentials) => {
         if (!auth.currentUser.emailVerified) {
@@ -25,12 +41,15 @@ const Signin = () => {
           setIsError(true);
           setheader("Notice");
           setmsg("Please verify your email before signing in.");
+          setLoading(false);
         } else {
           console.log("Signed in successfully", useCredentials);
+          navigate("/cart");
           console.log(useCredentials);
         }
       })
       .catch((error) => {
+        setLoading(false);
         if (error.message === "Firebase: Error (auth/invalid-credential).") {
           setmsg("Email and password do not match");
         } else {
@@ -42,6 +61,7 @@ const Signin = () => {
   };
 
   const googleSignup = () => {
+    setLoading(true);
     setIsError(false); // Reset error state before Google sign-in
     setmsg("");
     setheader("");
@@ -60,6 +80,7 @@ const Signin = () => {
     setheader("FORGOT PASSWORD KE !!!");
     setIsError(true);
   };
+
   return (
     <div className="signin">
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -133,17 +154,16 @@ const Signin = () => {
 
             <div>
               <button
-                type="submit"
+                type="submit" disabled={loading}
                 className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
               >
-                Sign in
+              {loading ? <LoadingOutlined /> : "Sign In"}
               </button>
             </div>
-            <span className="font-bold">- or -</span>
             <div>
               <button
                 onClick={googleSignup}
-                className="btn btn-sm flex w-full justify-around  font-semibold "
+                className="btn btn-sm flex w-full justify-center bg-white  font-semibold "
               >
                 <img className="w-4" src={googleicon} alt="googleicon" />{" "}
                 Continue with Google
@@ -153,13 +173,12 @@ const Signin = () => {
 
           <p className="mt-3 text-center text-sm text-gray-500">
             Not a member?
-            <a
-              href="#"
-              className="font-semibold leading-6 text-green-500 hover:text-green-500"
-            >
-              {" "}
-              Register Here
-            </a>
+            <Link
+            to="/signup"
+            className="font-semibold leading-6 text-green-500 hover:text-green-500"
+          >
+            Signup Here
+          </Link>
           </p>
         </div>
       </div>

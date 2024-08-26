@@ -1,58 +1,77 @@
 import React from "react";
 import { useState } from "react";
 import { auth, provider } from "../Firebase";
+import { LoadingOutlined } from "@ant-design/icons";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  signInWithRedirect,
 } from "firebase/auth";
-import { signInWithRedirect } from "firebase/auth";
 import book64 from "../assets/book_reading_64px.png";
 import googleicon from "../assets/google_48px.png";
 import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const [isError, setIsError] = useState(false);
   const [msg, setmsg] = useState("");
   const [header, setheader] = useState("");
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const Signup = (e) => {
+  const signup = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     setIsError(false);
     setmsg("");
     setheader("");
+    if (!email.includes("@")) {
+      setIsError(true);
+      setheader("Invalid Email");
+      setmsg("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
     createUserWithEmailAndPassword(auth, email, password)
-      .then((useCredentials) => {
-        sendEmailVerification(auth.currentUser).then(() => {
-          setIsError(true);
-          setmsg(
-            `An Email has been sent to ${email}, Please Verify this Email`
-          );
-          setheader("Notice");
-        });
-        console.log(useCredentials);
+      .then((userCredentials) => {
+        console.log(userCredentials);
+
+        return sendEmailVerification(auth.currentUser);
+      })
+      .then(() => {
+        setIsError(true);
+        setheader("Notice");
+        setmsg("Please verify your Email Before Signing In");
+
+        setLoading(false);
+
+        // Programmatic navigation after email verification is sent
+        navigate("/signin");
       })
       .catch((error) => {
+        setLoading(false);
         console.log(error);
 
         setIsError(true);
-        if (
-          error.message ===
-          "Firebase: Password should be at least 6 characters (auth/weak-password)."
-        ) {
-          setmsg("Password should be at least 6 characters");
-        } else if (
-          error.message === "Firebase: Error (auth/email-already-in-use)."
-        ) {
-          setmsg("Email Already in Use");
-        } else {
-          setmsg(error.message);
+        setheader("An Error Occurred");
+
+        switch (error.code) {
+          case "auth/weak-password":
+            setmsg("Password should be at least 6 characters");
+            break;
+          case "auth/email-already-in-use":
+            setmsg("Email Already in Use");
+            break;
+          default:
+            setmsg(error.message);
         }
-        setheader("An Error Occured");
       });
   };
+
   const googleSignup = () => {
     setIsError(false); // Reset error state before Google sign-in
     setmsg("");
@@ -78,10 +97,10 @@ const Signup = () => {
       </div>
 
       <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form onSubmit={Signup} className="space-y-6" action="#" method="POST">
+        <form onSubmit={signup} className="space-y-6" action="#" method="POST">
           <div>
             <label
-              for="email"
+              htmlFor="email"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
               Email address
@@ -93,7 +112,7 @@ const Signup = () => {
                 id="email"
                 name="email"
                 type="email"
-                autocomplete="email"
+                autoComplete="email"
                 required
                 className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
               />
@@ -103,7 +122,7 @@ const Signup = () => {
           <div>
             <div>
               <label
-                for="password"
+                htmlFor="password"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Password
@@ -114,7 +133,7 @@ const Signup = () => {
                 id="password"
                 name="password"
                 type="password"
-                autocomplete="current-password"
+                autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 required
@@ -125,17 +144,16 @@ const Signup = () => {
 
           <div>
             <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
+              type="submit" disabled={loading}
+              className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
             >
-              Sign up
+              {loading ? <LoadingOutlined /> : "Sign up"}
             </button>
           </div>
-          <span className="font-bold">- or -</span>
           <div>
             <button
               onClick={googleSignup}
-              className="btn btn-sm flex w-full justify-around  font-semibold "
+              className="btn btn-sm flex w-full bg-white justify-center  font-semibold "
             >
               <img className="w-4" src={googleicon} alt="googleicon" /> Continue
               with Google
@@ -145,13 +163,12 @@ const Signup = () => {
 
         <p className="mt-2 text-center text-sm text-gray-500">
           Already a member?
-          <a
-            href="#"
+          <Link
+            to="/signin"
             className="font-semibold leading-6 text-green-500 hover:text-green-500"
           >
-            {" "}
             Signin Here
-          </a>
+          </Link>
         </p>
       </div>
       <Modal header={header} isError={isError} msg={msg} />
