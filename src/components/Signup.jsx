@@ -1,14 +1,14 @@
 import React from "react";
 import { useState } from "react";
-import { auth, provider } from "../../Firebase";
+import { auth, provider } from "../Firebase";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
 import { signInWithRedirect } from "firebase/auth";
-import book64 from "../../assets/book_reading_64px.png";
-import googleicon from "../../assets/google_48px.png";
-import Modal from "../Modal";
+import book64 from "../assets/book_reading_64px.png";
+import googleicon from "../assets/google_48px.png";
+import Modal from "./Modal";
 
 const Signup = () => {
   const [isError, setIsError] = useState(false);
@@ -36,16 +36,21 @@ const Signup = () => {
       })
       .catch((error) => {
         console.log(error);
-        
-    setIsError(true);
-    if(error.message==="Firebase: Password should be at least 6 characters (auth/weak-password)."){
-      setmsg("Password should be at least 6 characters");
-    } else if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-      setmsg("Email Already in Use");
-    }else  {
-      setmsg(error.message);
-    }
-    setheader("An Error Occured");
+
+        setIsError(true);
+        if (
+          error.message ===
+          "Firebase: Password should be at least 6 characters (auth/weak-password)."
+        ) {
+          setmsg("Password should be at least 6 characters");
+        } else if (
+          error.message === "Firebase: Error (auth/email-already-in-use)."
+        ) {
+          setmsg("Email Already in Use");
+        } else {
+          setmsg(error.message);
+        }
+        setheader("An Error Occured");
       });
   };
   const googleSignup = () => {
@@ -150,7 +155,6 @@ const Signup = () => {
         </p>
       </div>
       <Modal header={header} isError={isError} msg={msg} />
-
     </div>
   );
 };

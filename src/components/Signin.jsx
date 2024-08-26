@@ -1,12 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import { auth, provider } from "../../Firebase";
+import { auth, provider } from "../Firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { signInWithRedirect } from "firebase/auth";
 
-import book64 from "../../assets/book_reading_64px.png";
-import googleicon from "../../assets/google_48px.png";
-import Modal from "../Modal";
+import book64 from "../assets/book_reading_64px.png";
+import googleicon from "../assets/google_48px.png";
+import Modal from "./Modal";
 const Signin = () => {
   const [isError, setIsError] = useState(false);
   const [msg, setmsg] = useState("");
@@ -111,10 +111,7 @@ const Signin = () => {
                   Password
                 </label>
                 <div onClick={fgpw} className="text-sm">
-                  <a
-                    
-                    className="font-semibold text-green-500 hover:text-green-500"
-                  >
+                  <a className="font-semibold text-green-500 hover:text-green-500">
                     Forgot password?
                     {/* better remeber it  */}
                   </a>

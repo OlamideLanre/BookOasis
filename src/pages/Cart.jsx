@@ -5,7 +5,7 @@ import {
   ArrowLeftOutlined,
 } from "@ant-design/icons";
 import "./Cart.css";
-import { Checkout } from "./Checkout";
+// import { Checkout } from "./Checkout";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -60,7 +60,7 @@ export const Cart = () => {
                 </div>
               </div>
             ))}
-         
+
             <p className="text-red-600">
               Clear cart <DeleteFilled onClick={clearCart} />{" "}
             </p>
