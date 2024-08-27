@@ -9,6 +9,7 @@ import { Cart } from "./pages/Cart";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
 import { AuthProvider } from "./components/Authcontext";
+import PrivateRoute from "./components/ProtectedRoutes";
 // import { LayoutComponent } from "./components/LayoutComponent";
 
 function App() {
@@ -26,9 +27,31 @@ function App() {
           <NavBar inputValue={inputValue} setInputValue={setInputValue} />
         )}
         <Routes>
-          <Route index element={<Home inputValue={inputValue} />} />
-          <Route path="/bookdetails/:bookID" element={<BookDetails />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route
+            index
+            element={
+              <PrivateRoute>
+                <Home inputValue={inputValue} />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/bookdetails/:bookID"
+            element={
+              <PrivateRoute>
+                <BookDetails />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/cart"
+            element={
+              <PrivateRoute>
+                <Cart />
+              </PrivateRoute>
+            }
+          />
 
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
