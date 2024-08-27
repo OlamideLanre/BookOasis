@@ -2,28 +2,46 @@ import React, { useState } from "react";
 import { useAuth } from "./Authcontext";
 import { doSignInWihEmailAndPassword, doSignInWithGoogle } from "../auth";
 import { useNavigate, Link } from "react-router-dom";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import book64 from "../assets/book_reading_64px.png";
 import googleicon from "../assets/google_48px.png";
-// import Modal from "./Modal";
+import Modal from "./Modal";
 const Signin = () => {
   const { userLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+
+  const [modal, setModal] = useState({
+    isError: false,
+    msg: "",
+    header: "",
+  });
 
   const onsubmit = async (e) => {
     e.preventDefault();
 
     if (!isSigningIn) {
       setIsSigningIn(true);
-      await doSignInWihEmailAndPassword(email, password).then((res) => {
-        console.log(" signed in succesfully ", res);
-        navigate("/");
-      });
+      setLoading(true);
+      await doSignInWihEmailAndPassword(email, password)
+        .then((res) => {
+          console.log(" signed in succesfully ", res);
+          navigate("/");
+        })
+        .catch((err) => {
+          setIsSigningIn(false);
+          setLoading(false);
+          setModal({
+            isError: true,
+            msg: err.message,
+            header: "AN ERROR OCCURED",
+          });
+        });
     }
   };
 
@@ -31,9 +49,20 @@ const Signin = () => {
     e.preventDefault();
     if (!isSigningIn) {
       setIsSigningIn(true);
-      doSignInWithGoogle().catch((error) => {
-        setIsSigningIn(false);
-      });
+      setLoading(true);
+      doSignInWithGoogle()
+        .then(() => {
+          navigate("/");
+        })
+        .catch((err) => {
+          setIsSigningIn(false);
+          setLoading(false);
+          setModal({
+            isError: true,
+            msg: err.message,
+            header: "AN ERROR OCCURED",
+          });
+        });
     }
   };
   const fgpw = () => {
@@ -41,6 +70,14 @@ const Signin = () => {
       isError: true,
       msg: "Better Remember That Password o",
       header: "FORGOT PASSWORD KE !!!",
+    });
+  };
+
+  const closeModal = () => {
+    setModal({
+      isError: false,
+      msg: "",
+      header: "",
     });
   };
   return (
@@ -116,7 +153,7 @@ const Signin = () => {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
                 >
-                  {/* {loading ? <LoadingOutlined /> : "Sign In"} */} Sign In
+                  {loading ? <LoadingOutlined /> : "Sign In"}
                 </button>
               </div>
               <div>
@@ -141,12 +178,11 @@ const Signin = () => {
             </p>
           </div>
         </div>
-        {/* {modal.isError ? (
-        <div>
-          {" "}
-          <Modal modal={modal} />
-        </div>
-      ) : null} */}
+        {modal.isError ? (
+          <div>
+            <Modal modal={modal} onClose={closeModal} />
+          </div>
+        ) : null}
       </div>
     </div>
   );
