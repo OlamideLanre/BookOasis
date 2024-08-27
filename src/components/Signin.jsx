@@ -30,6 +30,7 @@ const Signin = () => {
       setLoading(true);
       await doSignInWihEmailAndPassword(email, password)
         .then((res) => {
+            
           console.log(" signed in succesfully ", res);
           navigate("/");
         })
