@@ -6,7 +6,12 @@ import Modal from "./Modal";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-import { doCreateUserWithEmailAndPassword } from "../auth";
+import {
+  doCreateUserWithEmailAndPassword,
+  doSendEmailVerification,
+} from "../auth";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 const Signup = () => {
   const { userLoggedIn } = useAuth();
 
@@ -30,7 +35,10 @@ const Signup = () => {
       setLoading(true);
       await doCreateUserWithEmailAndPassword(email, password)
         .then(() => {
-          navigate("/signin");
+          doSendEmailVerification(auth.currentUser);
+          signOut(auth).then(() => {
+            navigate("/signin");
+          });
         })
         .catch((err) => {
           setIsRegistering(false);
