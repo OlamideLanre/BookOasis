@@ -3,9 +3,13 @@ import {
   ShoppingCartOutlined,
   DownOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { dosignout } from "../auth";
+import { useAuth } from "./Authcontext";
 
 export const NavBar = ({ inputValue, setInputValue }) => {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
   function handleInput(e) {
     setInputValue(e.target.value);
     console.log(inputValue);
@@ -88,10 +92,20 @@ export const NavBar = ({ inputValue, setInputValue }) => {
                 </a>
               </li>
               <li>
-                <a>Settings</a>
+                {currentUser.displayName
+                  ? currentUser.displayName
+                  : currentUser.email}
               </li>
               <li>
-                <a>Logout</a>
+                <a
+                  onClick={() => {
+                    dosignout().then(() => {
+                      navigate("/signin");
+                    });
+                  }}
+                >
+                  Logout
+                </a>
               </li>
             </ul>
           </div>
