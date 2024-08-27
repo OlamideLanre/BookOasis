@@ -7,12 +7,10 @@ import { LoadingOutlined } from "@ant-design/icons";
 import book64 from "../assets/book_reading_64px.png";
 import googleicon from "../assets/google_48px.png";
 import Modal from "./Modal";
-import { getAuth, signOut } from "firebase/auth";
-
 const Signin = () => {
   const { userLoggedIn } = useAuth();
   const navigate = useNavigate();
-  const auth = getAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,19 +30,8 @@ const Signin = () => {
       setLoading(true);
       await doSignInWihEmailAndPassword(email, password)
         .then((res) => {
-          if (!auth.currentUser.emailVerified) {
-            signOut(auth);
-            setIsSigningIn(false);
-            setLoading(false);
-            setModal({
-              isError: true,
-              msg: "Please verify your email before signing in.",
-              header: "Notice",
-            });
-          } else {
-            console.log(" signed in succesfully ", res);
-            navigate("/");
-          }
+          console.log(" signed in succesfully ", res);
+          navigate("/");
         })
         .catch((err) => {
           setIsSigningIn(false);
