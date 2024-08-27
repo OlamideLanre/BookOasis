@@ -24,7 +24,9 @@ function App() {
     <>
       <AuthProvider>
         {!hideHeaderFooter && (
-          <NavBar inputValue={inputValue} setInputValue={setInputValue} />
+          <PrivateRoute>
+            <NavBar inputValue={inputValue} setInputValue={setInputValue} />
+          </PrivateRoute>
         )}
         <Routes>
           <Route
