@@ -34,3 +34,29 @@
 .summary{
     height:15em;
 }
+.mobileCheckout{
+    width: 90%;
+    margin: 0.6em auto;
+    position: sticky;
+    bottom: 0;
+    z-index: 1000;
+}
+.clear-cart:hover{
+    --tw-bg-opacity: 1;
+        background-color: rgb(229 231 235 / var(--tw-bg-opacity))
+    /* background-color: gray; */
+}
+@media (max-width:768px) {
+    .flex-parent{
+        flex-direction: column;
+    }
+    .summary{
+        display: none !important;
+    }
+}
+
+@media (min-width:768px) and (max-width:1440px) {
+    .mobileCheckout {
+        display: none !important;
+    }
+}

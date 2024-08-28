@@ -16,7 +16,11 @@ export const BookDetails = () => {
   const [cartItems, setCartItems] = useState(() => {
     // Retrieve cart items from localStorage if available
     const savedCartItems = localStorage.getItem("cartItems");
-    return savedCartItems ? JSON.parse(savedCartItems) : [];
+    return savedCartItems && savedCartItems !== "undefined"
+      ? JSON.parse(savedCartItems)
+      : [];
+
+    // return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
 
   const CART_ITEMS = [];
@@ -66,7 +70,7 @@ export const BookDetails = () => {
       // Save the updated cart to localStorage to keep the data persistent
       localStorage.setItem("cartItems", JSON.stringify(updatedCart));
       toast("Book added to cart!");
-      console.log(CART_ITEMS);
+      // console.log(CART_ITEMS);
     } else {
       toast("Item not added");
     }
@@ -84,7 +88,7 @@ export const BookDetails = () => {
               {bookInfo.title}
               {/* hello */}
             </h1>
-            <div className="flex gap-5 py-4">
+            <div className="flex gap-5 py-4 details-container">
               <div>
                 <img
                   src={bookInfo.image}
@@ -110,12 +114,12 @@ export const BookDetails = () => {
                 >
                   Add to cart
                   <ShoppingOutlined className="ml-2" />
-                  <ToastContainer position="bottom-right" />
+                  <ToastContainer position="top-left" />
                 </button>
-                <button className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold ml-3">
+                {/* <button className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold ml-3">
                   Buy now
                   <DollarOutlined className="ml-2" />
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

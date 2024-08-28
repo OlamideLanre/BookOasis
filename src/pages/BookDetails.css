@@ -1,11 +1,27 @@
 .parent{
     max-width: 1000px;
     margin: 0 auto;
+    padding: 1em;
     /* height: 70vh; */
 }
 .parent .textDiv{
-    max-width: 750px;
+    max-width: 700px;
+    text-align: justify;
 }
 p{
     color: black;
+}
+@media (max-width:853px) {
+    .details-container{
+        flex-direction: column;
+        align-items: center;
+    }
+    .textDiv{
+        
+        font-size: 1.1rem;
+    }
+    .details-container button{
+        width: 100%;
+    }
+    
 }

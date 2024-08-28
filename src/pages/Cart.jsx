@@ -14,7 +14,10 @@ export const Cart = () => {
   const [cartItems, setCartItems] = useState(() => {
     // Retrieve cart items from localStorage if available
     const savedCartItems = localStorage.getItem("cartItems");
-    return savedCartItems ? JSON.parse(savedCartItems) : [];
+    return savedCartItems && savedCartItems !== "undefined"
+      ? JSON.parse(savedCartItems)
+      : [];
+    // return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
   const [isEmpty, setIsEmpty] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -31,10 +34,10 @@ export const Cart = () => {
   }, []);
 
   function clearCart() {
-    localStorage.clear();
-    if (cartItems == []) {
-      window.location.reload();
-    }
+    localStorage.removeItem("cartItems");
+    setCartItems([]);
+    setItemCount(0);
+    setTotalPrice(0);
   }
 
   function removeItem(id) {
@@ -87,9 +90,12 @@ export const Cart = () => {
               </div>
             ))}
 
-            <p className="text-red-600">
-              Clear cart <DeleteFilled onClick={clearCart} />{" "}
-            </p>
+            <button
+              className="text-red-600 clear-cart p-2 rounded-md mt-2 "
+              onClick={clearCart}
+            >
+              Clear cart <DeleteFilled />
+            </button>
           </div>
           {/* checkout content */}
           <div className="summary bg-white w-64 p-3 rounded-xl">
@@ -117,6 +123,38 @@ export const Cart = () => {
           </div>
         </div>
       )}
+      <div className="mobileCheckout">
+        <div className="bg-white flex justify-evenly p-1 rounded-md">
+          <h1 className="text-black font-bold" id="total">
+            Total: ${totalPrice}
+          </h1>
+          {/* You can open the modal using document.getElementById('ID').showModal() method */}
+          <button
+            className="bg-green-600 font-semibold text-white px-6 py-1 rounded-2xl"
+            onClick={() => document.getElementById("my_modal_3").showModal()}
+          >
+            Checkout({itemCount})
+          </button>
+          <dialog id="my_modal_3" className="modal">
+            <div className="modal-box">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                  ✕
+                </button>
+              </form>
+              <h3 className="font-bold text-lg">Hello!</h3>
+              <p className="py-4">
+                Press ESC key or click on ✕ button to close
+              </p>
+            </div>
+          </dialog>
+
+          {/* <button className="bg-green-600 font-semibold text-white px-6 py-1 rounded-md">
+            Checkout({itemCount})
+          </button> */}
+        </div>
+      </div>
     </>
   );
 };

@@ -4,7 +4,7 @@ import {
   DownOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-
+import "../App.css";
 export const NavBar = ({ inputValue, setInputValue }) => {
   function handleInput(e) {
     setInputValue(e.target.value);
@@ -30,15 +30,15 @@ export const NavBar = ({ inputValue, setInputValue }) => {
               placeholder="Search e.g 'science'"
               value={inputValue}
               onChange={handleInput}
-              className=" input-bordered w-24 md:w-auto bg-gray-100 pr-24 pl-5 py-2 rounded-md"
+              className="inputField input-bordered w-24 md:w-auto bg-gray-100 pr-24 pl-5 py-2 rounded-md"
               title="Enter a key word e.g love, science etc"
             />
           </div>
-          <div className="dropdown dropdown-end">
+          <div className="dropdown dropdown-end category">
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-ghost rounded-btn text-green-500"
+              className="btn btn-ghost rounded-btn text-green-500 "
             >
               Category <DownOutlined />
             </div>
@@ -96,6 +96,16 @@ export const NavBar = ({ inputValue, setInputValue }) => {
             </ul>
           </div>
         </div>
+      </div>
+      <div className="mobileFormCtrl">
+        <input
+          type="text"
+          placeholder="Search e.g 'science'"
+          value={inputValue}
+          onChange={handleInput}
+          className="mobileInput input-bordered p-2 pr-10 pl-5 md:w-auto bg-white rounded-2xl "
+          title="Enter a key word e.g love, science etc"
+        />
       </div>
     </>
   );
