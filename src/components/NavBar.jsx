@@ -3,13 +3,22 @@ import {
   ShoppingCartOutlined,
   DownOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import "../App.css";
+import { Link, useNavigate } from "react-router-dom";
+import { dosignout } from "../auth";
+import { useAuth } from "./Authcontext";
+import user_ from "../assets/user_40px.png";
 export const NavBar = ({ inputValue, setInputValue }) => {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
   function handleInput(e) {
     setInputValue(e.target.value);
     console.log(inputValue);
   }
+  const avatarUrl = currentUser.photoURL
+    ? currentUser.photoURL // Use Google avatar if available
+    : user_; // Fallback to a default avatar
+
   return (
     <>
       <div className="navbar bg-white border-b-2">
@@ -79,19 +88,29 @@ export const NavBar = ({ inputValue, setInputValue }) => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu flex flex-col gap-3 items-center justify-between menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
+              <div className="avatar">
+                <div className="ring-green-400 ring-offset-base-100 w-24 rounded-full ring ring-offset-2">
+                  <img src={avatarUrl} />
+                </div>
+              </div>
+              <p className="font-semibold max-w-45 p-1 rounded-md text-center inline h-max bg-blue-100 break-all break-words">
+                {currentUser.displayName
+                  ? currentUser.displayName
+                  : currentUser.email}{" "}
+              </p>
+
               <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
+                <a
+                  onClick={() => {
+                    dosignout().then(() => {
+                      navigate("/signin");
+                    });
+                  }}
+                >
+                  Logout
                 </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a>Logout</a>
               </li>
             </ul>
           </div>
