@@ -22,14 +22,12 @@ export const BookDetails = () => {
 
     // return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
+  const [errMsg, setErrMesg] = useState();
 
   const CART_ITEMS = [];
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
-  myHeaders.append(
-    "x-apihub-key",
-    "ht-Y1oRt4gDHzJDgAbGKXdQge6JxueERvp-1hc47mpwJa6A6uI"
-  );
+  myHeaders.append("x-apihub-key", "f-TSfAgK10HKB0bEeBSzeq2v1YC8aZKpdiIkmPlZKJMor1wIJx");
   myHeaders.append("x-apihub-host", "Big-Book-API.allthingsdev.co");
   myHeaders.append("x-apihub-endpoint", "119056b9-68ee-424f-ad75-95f2664f9157");
 
@@ -48,8 +46,15 @@ export const BookDetails = () => {
       setBookInfo(data);
       if (bookInfo != []) {
         setLoading(false);
+        setErrMesg(false);
       }
     } catch (error) {
+      setLoading(false);
+      if (error == "net::ERR_INTERNET_DISCONNECTED") {
+        setErrMesg("please check you internet connection and try again");
+      } else {
+        setErrMesg("Oh no! an unexpected error occured");
+      }
       console.log("an error occured: " + error);
     }
   };
@@ -64,16 +69,20 @@ export const BookDetails = () => {
       Cover: bookInfo.image,
       Price: bookInfo.title.length,
     };
-    if (CART_ITEMS.push(newItem)) {
+    const isBookInCart = cartItems.some(cartItem => cartItem.ID === newItem.ID);
+    if (isBookInCart) {
+      toast("book is in cart")
+    }else if(CART_ITEMS.push(newItem)){
       const updatedCart = [...cartItems, newItem];
-      setCartItems(updatedCart);
-      // Save the updated cart to localStorage to keep the data persistent
-      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-      toast("Book added to cart!");
-      // console.log(CART_ITEMS);
-    } else {
-      toast("Item not added");
+        setCartItems(updatedCart);
+        // Save the updated cart to localStorage to keep the data persistent
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+        toast("Book added to cart!");
+    }else{
+      console.log("item not addded");
+      
     }
+
   }
   return (
     <>
@@ -114,8 +123,9 @@ export const BookDetails = () => {
                 >
                   Add to cart
                   <ShoppingOutlined className="ml-2" />
-                  <ToastContainer position="top-left" />
+                  
                 </button>
+                <ToastContainer position="top-left" />
                 {/* <button className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold ml-3">
                   Buy now
                   <DollarOutlined className="ml-2" />
@@ -125,6 +135,11 @@ export const BookDetails = () => {
           </div>
         )}
       </div>
+      {errMsg && (
+        <div className="mr-auto ml-auto col-span-5 h-56 text-center">
+          {errMsg}
+        </div>
+      )}
     </>
   );
 };
