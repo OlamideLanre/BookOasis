@@ -10,6 +10,7 @@ import Signin from "./components/Signin";
 import Signup from "./components/Signup";
 import { AuthProvider } from "./components/Authcontext";
 import PrivateRoute from "./components/ProtectedRoutes";
+import { LandingPage } from "./pages/LandingPage";
 // import { LayoutComponent } from "./components/LayoutComponent";
 
 function App() {
@@ -51,6 +52,15 @@ function App() {
             element={
               <PrivateRoute>
                 <Cart />
+              </PrivateRoute>
+            }
+          />
+
+        <Route
+            path="/aboutus"
+            element={
+              <PrivateRoute>
+                <LandingPage />
               </PrivateRoute>
             }
           />
