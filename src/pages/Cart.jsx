@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
 export const Cart = () => {
+
   const [cartItems, setCartItems] = useState(() => {
     // Retrieve cart items from localStorage if available
     const savedCartItems = localStorage.getItem("cartItems");
