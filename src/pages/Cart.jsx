@@ -11,7 +11,6 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
 export const Cart = () => {
-
   const [cartItems, setCartItems] = useState(() => {
     // Retrieve cart items from localStorage if available
     const savedCartItems = localStorage.getItem("cartItems");
@@ -117,10 +116,14 @@ export const Cart = () => {
                 </div>
               </div>
             </div>
-
-            <button className="bg-green-600 font-semibold text-white px-12 py-2 rounded-md ml-auto mr-auto flex mt-7">
-              Checkout({itemCount})
-            </button>
+            <Link
+              to="/checkout"
+              title="cart"
+            >
+              <button className="bg-green-600 font-semibold text-white px-12 py-2 rounded-md ml-auto mr-auto flex mt-7">
+                Checkout({itemCount})
+              </button>{" "}
+            </Link>
           </div>
         </div>
       )}
