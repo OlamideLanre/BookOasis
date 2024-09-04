@@ -11,6 +11,7 @@ import Signup from "./components/Signup";
 import { AuthProvider } from "./components/Authcontext";
 import PrivateRoute from "./components/ProtectedRoutes";
 import { LandingPage } from "./pages/LandingPage";
+import { TermsOfUse } from "./pages/TermsOfUse";
 // import { LayoutComponent } from "./components/LayoutComponent";
 
 function App() {
@@ -56,11 +57,20 @@ function App() {
             }
           />
 
-        <Route
+          <Route
             path="/aboutus"
             element={
               <PrivateRoute>
                 <LandingPage />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/termsofuse"
+            element={
+              <PrivateRoute>
+                <TermsOfUse />
               </PrivateRoute>
             }
           />

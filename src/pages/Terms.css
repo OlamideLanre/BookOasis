@@ -1,0 +1,12 @@
+.FAQs h3{
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0.4rem 0;
+}
+.FAQs p
+{
+    max-width: 700px;
+}
+.collapse li{
+    padding: 0.4rem 0;
+}

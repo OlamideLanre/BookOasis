@@ -8,9 +8,9 @@ export const Footer = () => {
           <Link to="/aboutus" className="link link-hover">
             About us
           </Link>
-          <a className="link link-hover">Terms of use</a>
-          <a className="link link-hover">Cookie policy</a>
-          <a className="link link-hover">FAQs</a>
+          <Link className="link link-hover" to="/termsofuse">Terms of use</Link>
+          <Link className="link link-hover" to="/termsofuse">Cookie policy</Link>
+          <Link className="link link-hover" to="/termsofuse">FAQs</Link>
         </nav>
         <nav>
           <div className="grid grid-flow-col gap-4">
