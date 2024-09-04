@@ -74,6 +74,7 @@ export const NavBar = ({ inputValue, setInputValue }) => {
             className="btn btn-ghost btn-circle avatar cartIcon"
             title="cart"
           >
+            <span className="indicator-item badge bg-green-400">0</span>
             <ShoppingCartOutlined />
           </Link>
           <div className="dropdown dropdown-end">
