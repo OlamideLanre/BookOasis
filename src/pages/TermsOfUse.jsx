@@ -3,7 +3,8 @@ import "./Terms.css"
 export const TermsOfUse = () => {
   return (
     <>
-      <div className="collapse collapse-arrow bg-base-200">
+    <div className="collapse-container">
+    <div className="collapse collapse-arrow ">
         <input type="radio" name="my-accordion-2" defaultChecked />
         <div className="collapse-title text-xl font-medium">Terms of use</div>
         <div className="collapse-content">
@@ -30,7 +31,7 @@ export const TermsOfUse = () => {
           </li>
         </div>
       </div>
-      <div className="collapse collapse-arrow bg-base-200">
+      <div className="collapse collapse-arrow ">
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">Cookie policy</div>
         <div className="collapse-content">
@@ -64,30 +65,30 @@ export const TermsOfUse = () => {
           </span>
         </div>
       </div>
-      <div className="FAQs collapse collapse-arrow bg-base-200">
+      <div className="FAQs collapse collapse-arrow ">
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">FAQs</div>
         <div className="collapse-content">
           <div>
-            <h3> How do I place an order on Book Oasis?</h3>
+            <h3> Q. How do I place an order on Book Oasis?</h3>
             <p>
-              To place an order, simply add the books you'd like to purchase to
+              a. To place an order, simply add the books you'd like to purchase to
               your cart and proceed to checkout. Follow the on-screen
               instructions to enter your shipping and payment information, and
               your order will be processed within 24 hours.
             </p>
           </div>
           <div>
-            <h3>What payment methods do you accept?</h3>
+            <h3>Q. What payment methods do you accept?</h3>
             <p>
-              We accept all major credit cards, including Visa, Mastercard, and
+              a. We accept all major credit cards, including Visa, Mastercard, and
               American Express, as well as PayPal
             </p>
           </div>
           <div>
-            <h3>How long will it take for my order to arrive?</h3>
+            <h3>Q. How long will it take for my order to arrive?</h3>
             <p>
-              Shipping times may vary depending on your location, but most
+              a. Shipping times may vary depending on your location, but most
               orders arrive within 5-7 business days. You'll receive a
               confirmation email with tracking information once your order has
               shipped.
@@ -95,6 +96,8 @@ export const TermsOfUse = () => {
           </div>
         </div>
       </div>
+    </div>
+      
     </>
   );
 };

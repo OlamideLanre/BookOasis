@@ -10,3 +10,13 @@
 .collapse li{
     padding: 0.4rem 0;
 }
+.collapse{
+    background-color: white;
+    border: 1px solid green;
+    max-width: 900px;
+    margin: 0.5em ;
+    
+}
+.collapse-container{
+    padding:0 1em;
+}
