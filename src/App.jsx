@@ -12,6 +12,8 @@ import { AuthProvider } from "./components/Authcontext";
 import PrivateRoute from "./components/ProtectedRoutes";
 import { LandingPage } from "./pages/LandingPage";
 import { TermsOfUse } from "./pages/TermsOfUse";
+import Checkout from "./pages/Checkout";
+// import { LayoutComponent } from "./components/LayoutComponent";
 
 function App() {
   const [inputValue, setInputValue] = useState();
@@ -62,6 +64,14 @@ function App() {
             element={
               <PrivateRoute>
                 <LandingPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <PrivateRoute>
+                <Checkout />
               </PrivateRoute>
             }
           />

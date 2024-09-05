@@ -67,7 +67,9 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
       ID: bookInfo.id,
       Title: bookInfo.title,
       Cover: bookInfo.image,
-      Price: bookInfo.title.length,
+      Price: 22
+      // bookInfo.title.length
+      ,
     };
     const isBookInCart = cartItems.some(cartItem => cartItem.ID === newItem.ID);
     if (isBookInCart) {
@@ -118,7 +120,8 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
                 <p>Description: {bookInfo.description}</p>
                 <p>Publish date: {bookInfo.publish_date}</p>
                 <p className="font-semibold text-black">
-                  Price: ${bookInfo.title.length}
+                  Price: 200dols
+                  {/* ${bookInfo.title.length} */}
                 </p>
                 <button
                   className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold"
