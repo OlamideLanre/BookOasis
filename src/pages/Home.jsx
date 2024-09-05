@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./Home.css";
-export const Home = ({ inputValue }) => {
+export const Home = ({ inputValue, selectedCategory }) => {
   const [loading, setLoading] = useState(true);
   const [bookDetails, setBookDetails] = useState([]);
   const [errMsg, setErrMesg] = useState();
+  const [filteredBooks, setFilteredBooks] = useState([]);
 
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
@@ -21,22 +22,28 @@ export const Home = ({ inputValue }) => {
     redirect: "follow",
   };
 
-  const URL_REQUEST = `https://Big-Book-API.proxy-production.allthingsdev.co/search-books?query=books+about+${inputValue}&number=40`;
+  // const URL_REQUEST = `https://Big-Book-API.proxy-production.allthingsdev.co/search-books?query=books+about+${inputValue}&number=40`;
   const getBooks = async () => {
     try {
-      let response = await fetch(URL_REQUEST, requestOptions);
-      let data = await response.json();
-      const details = data.books.flat();
-      setBookDetails(details);
+      if (inputValue || selectedCategory) {
+        const categoryQuery = selectedCategory === 'All' ? '' : `+${selectedCategory}`;
+        const URL_REQUEST = `https://Big-Book-API.proxy-production.allthingsdev.co/search-books?query=books+about+${inputValue}+${categoryQuery}&number=40`;
+        let response = await fetch(URL_REQUEST, requestOptions);
+        let data = await response.json();
+        if (!response.ok) {
+          console.log(
+            "response not okay, here's the status code: " + response.status
+          );
+        }
+        const details = data.books.flat();
+        setBookDetails(details);
+      }
+     
       if (bookDetails != []) {
         setLoading(false);
         setErrMesg(false);
       }
-      if (!response.ok) {
-        console.log(
-          "response not okay, here's the status code: " + response.status
-        );
-      }
+   
     } catch (error) {
       setLoading(false);
       if (error == "net::ERR_INTERNET_DISCONNECTED") {
@@ -51,7 +58,12 @@ export const Home = ({ inputValue }) => {
 
   useEffect(() => {
     getBooks();
-  }, [inputValue]);
+    if (selectedCategory === 'All') {
+      setFilteredBooks(bookDetails);
+    } else {
+      setFilteredBooks(bookDetails.filter(book => book.category === selectedCategory));
+    }
+  }, [inputValue,selectedCategory]);
 
   return (
     <>

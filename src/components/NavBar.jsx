@@ -9,16 +9,22 @@ import { dosignout } from "../auth";
 import { useAuth } from "./Authcontext";
 import user_ from "../assets/user_40px.png";
 // itemInCartCount
-export const NavBar = ({ inputValue, setInputValue, alreadyInCart }) => {
+export const NavBar = ({ inputValue, setInputValue, alreadyInCart,onCategoryChange }) => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   function handleInput(e) {
     setInputValue(e.target.value);
-    console.log(inputValue);
+    // console.log(inputValue);
   }
   const avatarUrl = currentUser.photoURL
     ? currentUser.photoURL // Use Google avatar if available
     : user_; // Fallback to a default avatar
+
+    const handleCategoryClick = (category) => {
+      onCategoryChange(category); // Send category to parent component
+      console.log(category + "selected");
+      
+    };
 
   return (
     <>
@@ -56,17 +62,22 @@ export const NavBar = ({ inputValue, setInputValue, alreadyInCart }) => {
               tabIndex={0}
               className="menu dropdown-content bg-base-100 rounded-box z-[1] mt-4 w-52 p-2 shadow"
             >
-              <li>
+              <li onClick={() => handleCategoryClick('All') 
+              }>
+                <a>All</a>
+              </li>
+              <li onClick={() => handleCategoryClick('Fiction') 
+              }>
                 <a>Fiction</a>
               </li>
-              <li>
+              <li onClick={() => handleCategoryClick('Science')}>
                 <a>Science</a>
               </li>
-              <li>
+              <li onClick={() => handleCategoryClick('Romance')}>
                 <a>Romance</a>
               </li>
-              <li>
-                <a>HIstory</a>
+              <li onClick={() => handleCategoryClick('History')}>
+                <a>History</a>
               </li>
             </ul>
           </div>
