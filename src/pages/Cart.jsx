@@ -22,6 +22,7 @@ export const Cart = () => {
   const [isEmpty, setIsEmpty] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [itemCount, setItemCount] = useState(0);
+  const [selectedItems, setSelectedItems] = useState([]); // Store selected items
 
   function displayInCart() {
     if (cartItems != []) {
@@ -47,13 +48,15 @@ export const Cart = () => {
     localStorage.setItem("cartItems", JSON.stringify(updatedAfterRemove));
   }
 
-  function processCheckout(checkbox, price) {
+  function processCheckout(checkbox, cartItem) {
     if (checkbox.checked) {
       setItemCount(itemCount + 1);
-      setTotalPrice(totalPrice + price);
+      setTotalPrice(totalPrice + cartItem.Price);
+      setSelectedItems([...selectedItems, cartItem]); // Add selected item
     } else {
       setItemCount(itemCount - 1);
-      setTotalPrice(totalPrice - price);
+      setTotalPrice(totalPrice - cartItem.Price);
+      setSelectedItems(selectedItems.filter((item) => item.ID !== cartItem.ID)); // Remove deselected item
     }
   }
 
@@ -68,17 +71,14 @@ export const Cart = () => {
               <div className="flex-items" key={cart.ID}>
                 <input
                   type="checkbox"
-                  onClick={() => processCheckout(event.target, cart.Price)}
+                  onClick={(e) => processCheckout(e.target, cart)}
                   id="checkBox"
                 />
+
                 <img src={cart.Cover} alt={cart.Title} width={"100px"} />
                 <div>
                   <h2 className="font-semibold text-green-600">{cart.Title}</h2>
                   <p>${cart.Price}</p>
-                  {/* <div className="quantity-ctrl">
-                    <MinusOutlined /> <span className="qntity">1</span>
-                    <PlusOutlined />
-                  </div> */}
                 </div>
                 <div>
                   <DeleteOutlined
@@ -91,7 +91,7 @@ export const Cart = () => {
             ))}
 
             <button
-              className="text-red-600 clear-cart p-2 rounded-md mt-2 "
+              className="text-red-600 clear-cart p-2 rounded-md mt-2"
               onClick={clearCart}
             >
               Clear cart <DeleteFilled />
@@ -119,10 +119,14 @@ export const Cart = () => {
             <Link
               to="/checkout"
               title="cart"
+              state={{
+                totalPrice: totalPrice,
+                selectedItems: selectedItems,
+              }}
             >
               <button className="bg-green-600 font-semibold text-white px-12 py-2 rounded-md ml-auto mr-auto flex mt-7">
                 Checkout({itemCount})
-              </button>{" "}
+              </button>
             </Link>
           </div>
         </div>
@@ -153,10 +157,6 @@ export const Cart = () => {
               </p>
             </div>
           </dialog>
-
-          {/* <button className="bg-green-600 font-semibold text-white px-6 py-1 rounded-md">
-            Checkout({itemCount})
-          </button> */}
         </div>
       </div>
     </>
