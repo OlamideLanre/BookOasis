@@ -21,7 +21,7 @@ export const Home = ({ inputValue }) => {
     redirect: "follow",
   };
 
-  const URL_REQUEST = `https://Big-Book-API.proxy-production.allthingsdev.co/search-books?query=books+about+${inputValue}&number=100`;
+  const URL_REQUEST = `https://Big-Book-API.proxy-production.allthingsdev.co/search-books?query=books+about+${inputValue}&number=40`;
   const getBooks = async () => {
     try {
       let response = await fetch(URL_REQUEST, requestOptions);
