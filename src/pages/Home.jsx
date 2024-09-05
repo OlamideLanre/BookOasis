@@ -11,7 +11,7 @@ export const Home = ({ inputValue }) => {
   myHeaders.append("Accept", "application/json");
   myHeaders.append(
     "x-apihub-key",
-    "wjHb-wXzY1WzRJXe9hp05FsNqBg8Pn98GnTE1MisU29BUghC9Y"
+    "48xa8BzqX4GNKzwYzWXCIJvcyFWcNwT8ogktSomr0pSWk5MkIh"
   );
   myHeaders.append("x-apihub-host", "Big-Book-API.allthingsdev.co");
   myHeaders.append("x-apihub-endpoint", "119056b9-68ee-424f-ad75-95f2664f9157");

@@ -116,10 +116,14 @@ export const Cart = () => {
                 </div>
               </div>
             </div>
-
-            <button className="bg-green-600 font-semibold text-white px-12 py-2 rounded-md ml-auto mr-auto flex mt-7">
-              Checkout({itemCount})
-            </button>
+            <Link
+              to="/checkout"
+              title="cart"
+            >
+              <button className="bg-green-600 font-semibold text-white px-12 py-2 rounded-md ml-auto mr-auto flex mt-7">
+                Checkout({itemCount})
+              </button>{" "}
+            </Link>
           </div>
         </div>
       )}
