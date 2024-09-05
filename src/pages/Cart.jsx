@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
-export const Cart = () => {
+export const Cart = ({alreadyInCart, setAlreadyInCart}) => {
   const [cartItems, setCartItems] = useState(() => {
     // Retrieve cart items from localStorage if available
     const savedCartItems = localStorage.getItem("cartItems");
@@ -23,6 +23,11 @@ export const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [itemCount, setItemCount] = useState(0);
 
+  let itemsInCart= cartItems.length
+  function cartCount() {
+    setAlreadyInCart(itemsInCart)
+  }
+
   function displayInCart() {
     if (cartItems != []) {
       setIsEmpty(false);
@@ -31,6 +36,7 @@ export const Cart = () => {
 
   useEffect(() => {
     displayInCart();
+    cartCount()
   }, []);
 
   function clearCart() {
@@ -45,6 +51,7 @@ export const Cart = () => {
     const updatedAfterRemove = cartItems.filter((item) => item.ID !== id);
     setCartItems(updatedAfterRemove);
     localStorage.setItem("cartItems", JSON.stringify(updatedAfterRemove));
+    setAlreadyInCart(itemsInCart - 1)
   }
 
   function processCheckout(checkbox, price) {
@@ -55,6 +62,8 @@ export const Cart = () => {
       setItemCount(itemCount - 1);
       setTotalPrice(totalPrice - price);
     }
+    
+    
   }
 
   return (
@@ -104,12 +113,10 @@ export const Cart = () => {
               <div className="text-lg flex justify-between">
                 <div>
                   <p>items: </p>
-                  {/* <p>discount: </p> */}
                   <h1 className="text-black font-semibold">Total:</h1>
                 </div>
                 <div>
                   <p id="itemcount">{itemCount}</p>
-                  {/* <p> $0 </p> */}
                   <h1 className="text-black font-bold" id="total">
                     $ {totalPrice}
                   </h1>

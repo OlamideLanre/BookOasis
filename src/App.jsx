@@ -12,10 +12,10 @@ import { AuthProvider } from "./components/Authcontext";
 import PrivateRoute from "./components/ProtectedRoutes";
 import { LandingPage } from "./pages/LandingPage";
 import { TermsOfUse } from "./pages/TermsOfUse";
-// import { LayoutComponent } from "./components/LayoutComponent";
 
 function App() {
   const [inputValue, setInputValue] = useState();
+  const [alreadyInCart, setAlreadyInCart]= useState();
   const location = useLocation(); // Get the current location
 
   // Determine whether to show the NavBar and Footer based on the current route
@@ -27,7 +27,7 @@ function App() {
       <AuthProvider>
         {!hideHeaderFooter && (
           <PrivateRoute>
-            <NavBar inputValue={inputValue} setInputValue={setInputValue} />
+            <NavBar inputValue={inputValue} setInputValue={setInputValue} alreadyInCart={alreadyInCart} />
           </PrivateRoute>
         )}
         <Routes>
@@ -43,7 +43,7 @@ function App() {
             path="/bookdetails/:bookID"
             element={
               <PrivateRoute>
-                <BookDetails />
+                <BookDetails alreadyInCart={alreadyInCart} setAlreadyInCart={setAlreadyInCart} />
               </PrivateRoute>
             }
           />
@@ -52,7 +52,7 @@ function App() {
             path="/cart"
             element={
               <PrivateRoute>
-                <Cart />
+                <Cart alreadyInCart={alreadyInCart} setAlreadyInCart={setAlreadyInCart} />
               </PrivateRoute>
             }
           />

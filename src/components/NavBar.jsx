@@ -8,7 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { dosignout } from "../auth";
 import { useAuth } from "./Authcontext";
 import user_ from "../assets/user_40px.png";
-export const NavBar = ({ inputValue, setInputValue }) => {
+// itemInCartCount
+export const NavBar = ({ inputValue, setInputValue, alreadyInCart }) => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   function handleInput(e) {
@@ -74,7 +75,7 @@ export const NavBar = ({ inputValue, setInputValue }) => {
             className="btn btn-ghost btn-circle avatar cartIcon"
             title="cart"
           >
-            <span className="indicator-item badge bg-green-400">0</span>
+            <span className="indicator-item badge bg-green-400">{alreadyInCart}</span>
             <ShoppingCartOutlined />
           </Link>
           <div className="dropdown dropdown-end">

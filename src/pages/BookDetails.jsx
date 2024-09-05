@@ -8,8 +8,7 @@ import {
 } from "@ant-design/icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-export const BookDetails = () => {
+export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
   const { bookID } = useParams();
   const [bookInfo, setBookInfo] = useState();
   const [loading, setLoading] = useState(true);
@@ -23,6 +22,7 @@ export const BookDetails = () => {
     // return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
   const [errMsg, setErrMesg] = useState();
+
 
   const CART_ITEMS = [];
   const myHeaders = new Headers();
@@ -50,7 +50,7 @@ export const BookDetails = () => {
       }
     } catch (error) {
       setLoading(false);
-      if (error == "net::ERR_INTERNET_DISCONNECTED") {
+      if (error === "net::ERR_INTERNET_DISCONNECTED") {
         setErrMesg("please check you internet connection and try again");
       } else {
         setErrMesg("Oh no! an unexpected error occured");
@@ -78,6 +78,10 @@ export const BookDetails = () => {
         // Save the updated cart to localStorage to keep the data persistent
         localStorage.setItem("cartItems", JSON.stringify(updatedCart));
         toast("Book added to cart!");
+        setAlreadyInCart(alreadyInCart + 1)
+        console.log(alreadyInCart);
+        
+        
     }else{
       console.log("item not addded");
       
@@ -95,7 +99,6 @@ export const BookDetails = () => {
           <div>
             <h1 className="font-bold text-3xl text-green-600 text-center">
               {bookInfo.title}
-              {/* hello */}
             </h1>
             <div className="flex gap-5 py-4 details-container">
               <div>
