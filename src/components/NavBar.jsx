@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { dosignout } from "../auth";
 import { useAuth } from "./Authcontext";
 import user_ from "../assets/user_40px.png";
-// itemInCartCount
+
 export const NavBar = ({ inputValue, setInputValue, alreadyInCart,onCategoryChange }) => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -66,17 +66,17 @@ export const NavBar = ({ inputValue, setInputValue, alreadyInCart,onCategoryChan
               }>
                 <a>All</a>
               </li>
-              <li onClick={() => handleCategoryClick('Fiction') 
+              <li onClick={() => handleCategoryClick('fiction') 
               }>
                 <a>Fiction</a>
               </li>
-              <li onClick={() => handleCategoryClick('Science')}>
+              <li onClick={() => handleCategoryClick('science')}>
                 <a>Science</a>
               </li>
-              <li onClick={() => handleCategoryClick('Romance')}>
+              <li onClick={() => handleCategoryClick('love')}>
                 <a>Romance</a>
               </li>
-              <li onClick={() => handleCategoryClick('History')}>
+              <li onClick={() => handleCategoryClick('history')}>
                 <a>History</a>
               </li>
             </ul>

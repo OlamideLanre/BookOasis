@@ -10,10 +10,7 @@ export const Home = ({ inputValue, selectedCategory }) => {
 
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
-  myHeaders.append(
-    "x-apihub-key",
-    "48xa8BzqX4GNKzwYzWXCIJvcyFWcNwT8ogktSomr0pSWk5MkIh"
-  );
+  myHeaders.append("x-apihub-key", process.env.VITE_REACT_API_KEY);
   myHeaders.append("x-apihub-host", "Big-Book-API.allthingsdev.co");
   myHeaders.append("x-apihub-endpoint", "119056b9-68ee-424f-ad75-95f2664f9157");
   const requestOptions = {
@@ -27,7 +24,7 @@ export const Home = ({ inputValue, selectedCategory }) => {
     try {
       if (inputValue || selectedCategory) {
         const categoryQuery = selectedCategory === 'All' ? '' : `+${selectedCategory}`;
-        const URL_REQUEST = `https://Big-Book-API.proxy-production.allthingsdev.co/search-books?query=books+about+${inputValue}+${categoryQuery}&number=40`;
+        const URL_REQUEST = `https://Big-Book-API.proxy-production.allthingsdev.co/search-books?query=books+about+${inputValue}+${categoryQuery}&number=60`;
         let response = await fetch(URL_REQUEST, requestOptions);
         let data = await response.json();
         if (!response.ok) {

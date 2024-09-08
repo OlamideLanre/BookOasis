@@ -27,7 +27,7 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
   const CART_ITEMS = [];
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
-  myHeaders.append("x-apihub-key", "f-TSfAgK10HKB0bEeBSzeq2v1YC8aZKpdiIkmPlZKJMor1wIJx");
+  myHeaders.append("x-apihub-key", process.env.VITE_REACT_API_KEY);
   myHeaders.append("x-apihub-host", "Big-Book-API.allthingsdev.co");
   myHeaders.append("x-apihub-endpoint", "119056b9-68ee-424f-ad75-95f2664f9157");
 
