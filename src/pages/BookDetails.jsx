@@ -8,8 +8,7 @@ import {
 } from "@ant-design/icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-export const BookDetails = () => {
+export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
   const { bookID } = useParams();
   const [bookInfo, setBookInfo] = useState();
   const [loading, setLoading] = useState(true);
@@ -23,6 +22,7 @@ export const BookDetails = () => {
     // return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
   const [errMsg, setErrMesg] = useState();
+
 
   const CART_ITEMS = [];
   const myHeaders = new Headers();
@@ -50,7 +50,7 @@ export const BookDetails = () => {
       }
     } catch (error) {
       setLoading(false);
-      if (error == "net::ERR_INTERNET_DISCONNECTED") {
+      if (error === "net::ERR_INTERNET_DISCONNECTED") {
         setErrMesg("please check you internet connection and try again");
       } else {
         setErrMesg("Oh no! an unexpected error occured");
@@ -67,7 +67,7 @@ export const BookDetails = () => {
       ID: bookInfo.id,
       Title: bookInfo.title,
       Cover: bookInfo.image,
-      Price: 22
+      Price: bookInfo.title.length
       // bookInfo.title.length
       ,
     };
@@ -80,6 +80,10 @@ export const BookDetails = () => {
         // Save the updated cart to localStorage to keep the data persistent
         localStorage.setItem("cartItems", JSON.stringify(updatedCart));
         toast("Book added to cart!");
+        setAlreadyInCart(alreadyInCart + 1)
+        console.log(alreadyInCart);
+        
+        
     }else{
       console.log("item not addded");
       
@@ -97,7 +101,6 @@ export const BookDetails = () => {
           <div>
             <h1 className="font-bold text-3xl text-green-600 text-center">
               {bookInfo.title}
-              {/* hello */}
             </h1>
             <div className="flex gap-5 py-4 details-container">
               <div>
@@ -117,8 +120,8 @@ export const BookDetails = () => {
                 <p>Description: {bookInfo.description}</p>
                 <p>Publish date: {bookInfo.publish_date}</p>
                 <p className="font-semibold text-black">
-                  Price: 200dols
-                  {/* ${bookInfo.title.length} */}
+                  {/* Price: 200dols */}
+                  ${bookInfo.title.length}
                 </p>
                 <button
                   className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold"

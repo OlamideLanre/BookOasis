@@ -11,12 +11,19 @@ import Signup from "./components/Signup";
 import { AuthProvider } from "./components/Authcontext";
 import PrivateRoute from "./components/ProtectedRoutes";
 import { LandingPage } from "./pages/LandingPage";
+import { TermsOfUse } from "./pages/TermsOfUse";
 import Checkout from "./pages/Checkout";
 // import { LayoutComponent } from "./components/LayoutComponent";
 
 function App() {
+  const [selectedCategory, setSelectedCategory] = useState('All'); 
   const [inputValue, setInputValue] = useState();
+  const [alreadyInCart, setAlreadyInCart]= useState();
   const location = useLocation(); // Get the current location
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
 
   // Determine whether to show the NavBar and Footer based on the current route
   const hideHeaderFooter =
@@ -27,7 +34,7 @@ function App() {
       <AuthProvider>
         {!hideHeaderFooter && (
           <PrivateRoute>
-            <NavBar inputValue={inputValue} setInputValue={setInputValue} />
+            <NavBar inputValue={inputValue} setInputValue={setInputValue} alreadyInCart={alreadyInCart} onCategoryChange={handleCategoryChange} />
           </PrivateRoute>
         )}
         <Routes>
@@ -35,7 +42,7 @@ function App() {
             index
             element={
               <PrivateRoute>
-                <Home inputValue={inputValue} />
+                <Home inputValue={inputValue}  selectedCategory={selectedCategory} />
               </PrivateRoute>
             }
           />
@@ -43,7 +50,7 @@ function App() {
             path="/bookdetails/:bookID"
             element={
               <PrivateRoute>
-                <BookDetails />
+                <BookDetails alreadyInCart={alreadyInCart} setAlreadyInCart={setAlreadyInCart} />
               </PrivateRoute>
             }
           />
@@ -52,10 +59,11 @@ function App() {
             path="/cart"
             element={
               <PrivateRoute>
-                <Cart />
+                <Cart alreadyInCart={alreadyInCart} setAlreadyInCart={setAlreadyInCart} />
               </PrivateRoute>
             }
           />
+
           <Route
             path="/aboutus"
             element={
@@ -69,6 +77,15 @@ function App() {
             element={
               <PrivateRoute>
                 <Checkout />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/termsofuse"
+            element={
+              <PrivateRoute>
+                <TermsOfUse />
               </PrivateRoute>
             }
           />

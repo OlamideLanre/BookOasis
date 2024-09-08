@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 import { PaystackButton } from "react-paystack";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Checkout = () => {
-  const publicKey =
-    "pk_test_ffdc1e2a973de03a7295ae12e475ea4f57487f81";
-  const amount = 1000000; // Remember, set in kobo!
+  const navigate = useNavigate();
+
+  const publicKey = "pk_test_ffdc1e2a973de03a7295ae12e475ea4f57487f81";
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-
+  const location = useLocation();
   const fmPhone = "+234" + phone;
+  const [totalPrice, setTotalPrice] = useState(() => {
+    // Initialize totalPrice from location or fallback to 0
+    const location = useLocation();
+    return location.state?.totalPrice || 0;
+  });
+  const { selectedItems } = location.state || { selectedItems: [] };
 
+  const amount = totalPrice * 1600 * 100; // Remember, set in kobo!
   const componentProps = {
     email,
     amount,
@@ -20,14 +28,36 @@ const Checkout = () => {
     },
     publicKey,
     text: "Pay Now",
-    onSuccess: () =>
-      alert("Payment Successful, Thanks for doing business with us! Come back soon!!"),
-    // onClose: () => alert("Wait! You need this oil, don't go!!!!"),
+    onSuccess: () => clearCart(),
+  };
+  function clearCart() {
+    const savedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    // Loop through selected items and remove them from the cart
+    const updatedCartItems = savedCartItems.filter(
+      (item) => !selectedItems.some((selected) => selected.ID === item.ID)
+    );
+  
+    // Update the cart in localStorage with the remaining items
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    setTotalPrice(0);
+    navigate("/"); // This will programmatically navigate to the home page
   }
+  function removeItem(id) {
+    const updatedAfterRemove = cartItems.filter((item) => item.ID !== id);
+    setCartItems(updatedAfterRemove);
+    localStorage.setItem("cartItems", JSON.stringify(updatedAfterRemove));
+  }
+  const prevent = (e) => {
+    e.preventDefault;
+  };
   return (
     <div>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-        <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <form
+          onSubmit={prevent}
+          className="mx-auto max-w-screen-xl px-4 2xl:px-0"
+        >
           {/* first section header */}
           <ol className="items-center flex w-full max-w-2xl text-center text-sm font-medium text-gray-500 dark:text-gray-400 sm:text-base">
             <li className="after:border-1 flex items-center text-green-700 after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 dark:text-green-500 dark:after:border-gray-700 sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
@@ -130,7 +160,6 @@ const Checkout = () => {
                       for="your_email"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      {" "}
                       Your email*{" "}
                     </label>
                     <input
@@ -163,7 +192,7 @@ const Checkout = () => {
                     </select>
                   </div>
                   {/* phone number */}
-                  <div>
+                  <div className="hidden">
                     <label
                       for="phone-input-3"
                       className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -262,7 +291,7 @@ const Checkout = () => {
                       Subtotal
                     </dt>
                     <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      $8,094.00
+                      <h2>${totalPrice ? totalPrice : 0}</h2>
                     </dd>
                   </dl>
 
@@ -275,10 +304,10 @@ const Checkout = () => {
 
                   <dl className="flex items-center justify-between gap-4 py-3">
                     <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                      Dev Money
+                      Discount
                     </dt>
                     <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      $2
+                      $0
                     </dd>
                   </dl>
 
@@ -287,7 +316,7 @@ const Checkout = () => {
                       Tax
                     </dt>
                     <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      $1
+                      ${totalPrice ? 1 : 0}
                     </dd>
                   </dl>
 
@@ -296,14 +325,15 @@ const Checkout = () => {
                       Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-white">
-                      $8,392.00
+                      ${totalPrice ? totalPrice + 1 : 0}
                     </dd>
                   </dl>
                 </div>
               </div>
 
               <div className="space-y-3">
-                <PaystackButton text="Checkout Payment"
+                <PaystackButton
+                  text="Checkout Payment"
                   className="paystack-button flex w-full items-center justify-center rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4  focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                   {...componentProps}
                 />
