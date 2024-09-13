@@ -7,10 +7,10 @@ export const Home = ({ inputValue, selectedCategory }) => {
   const [bookDetails, setBookDetails] = useState([]);
   const [errMsg, setErrMesg] = useState();
   const [filteredBooks, setFilteredBooks] = useState([]);
-
+  const apiKey=import.meta.env.VITE_REACT_APP_API_KEY
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
-  myHeaders.append("x-apihub-key", process.env.VITE_REACT_API_KEY);
+  myHeaders.append("x-apihub-key", apiKey);
   myHeaders.append("x-apihub-host", "Big-Book-API.allthingsdev.co");
   myHeaders.append("x-apihub-endpoint", "119056b9-68ee-424f-ad75-95f2664f9157");
   const requestOptions = {
@@ -19,6 +19,9 @@ export const Home = ({ inputValue, selectedCategory }) => {
     redirect: "follow",
   };
 
+  // console.log("x-apihub-key", `"${import.meta.env.VITE_REACT_APP_API_KEY}"`);
+  
+  
   // const URL_REQUEST = `https://Big-Book-API.proxy-production.allthingsdev.co/search-books?query=books+about+${inputValue}&number=40`;
   const getBooks = async () => {
     try {
@@ -28,12 +31,15 @@ export const Home = ({ inputValue, selectedCategory }) => {
         let response = await fetch(URL_REQUEST, requestOptions);
         let data = await response.json();
         if (!response.ok) {
+          // const errorData = await response.json();
+          // console.error("API Error:", errorData);
           console.log(
             "response not okay, here's the status code: " + response.status
-          );
-        }
+          );          
+        }       
         const details = data.books.flat();
         setBookDetails(details);
+        
       }
      
       if (bookDetails != []) {

@@ -27,7 +27,7 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
   const CART_ITEMS = [];
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
-  myHeaders.append("x-apihub-key", process.env.VITE_REACT_API_KEY);
+  myHeaders.append("x-apihub-key", import.meta.env.VITE_REACT_API_KEY);
   myHeaders.append("x-apihub-host", "Big-Book-API.allthingsdev.co");
   myHeaders.append("x-apihub-endpoint", "119056b9-68ee-424f-ad75-95f2664f9157");
 
@@ -68,7 +68,6 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
       Title: bookInfo.title,
       Cover: bookInfo.image,
       Price: bookInfo.title.length
-      // bookInfo.title.length
       ,
     };
     const isBookInCart = cartItems.some(cartItem => cartItem.ID === newItem.ID);
@@ -117,8 +116,10 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
                     ? bookInfo.subtitle
                     : "No subtitle available"}
                 </p>
+
                 <p>Description: {bookInfo.description}</p>
                 <p>Publish date: {bookInfo.publish_date}</p>
+                <p>No of pages: {bookInfo.number_of_pages}</p>
                 <p className="font-semibold text-black">
                   {/* Price: 200dols */}
                   ${bookInfo.title.length}
