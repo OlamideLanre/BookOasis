@@ -22,12 +22,12 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
     // return savedCartItems ? JSON.parse(savedCartItems) : [];
   });
   const [errMsg, setErrMesg] = useState();
-
+  const [authors, setAuthors] = useState([]);
 
   const CART_ITEMS = [];
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
-  myHeaders.append("x-apihub-key", import.meta.env.VITE_REACT_API_KEY);
+  myHeaders.append("x-apihub-key", import.meta.env.VITE_REACT_APP_API_KEY);
   myHeaders.append("x-apihub-host", "Big-Book-API.allthingsdev.co");
   myHeaders.append("x-apihub-endpoint", "119056b9-68ee-424f-ad75-95f2664f9157");
 
@@ -44,10 +44,13 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
       let response = await fetch(INFO_URL, requestOptions);
       let data = await response.json();
       setBookInfo(data);
+      setAuthors(data.authors);
+
       if (bookInfo != []) {
         setLoading(false);
         setErrMesg(false);
       }
+      // console.log(data.authors);
     } catch (error) {
       setLoading(false);
       if (error === "net::ERR_INTERNET_DISCONNECTED") {
@@ -67,27 +70,24 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
       ID: bookInfo.id,
       Title: bookInfo.title,
       Cover: bookInfo.image,
-      Price: bookInfo.title.length
-      ,
+      Price: bookInfo.title.length,
     };
-    const isBookInCart = cartItems.some(cartItem => cartItem.ID === newItem.ID);
+    const isBookInCart = cartItems.some(
+      (cartItem) => cartItem.ID === newItem.ID
+    );
     if (isBookInCart) {
-      toast("book is in cart")
-    }else if(CART_ITEMS.push(newItem)){
+      toast("book is in cart");
+    } else if (CART_ITEMS.push(newItem)) {
       const updatedCart = [...cartItems, newItem];
-        setCartItems(updatedCart);
-        // Save the updated cart to localStorage to keep the data persistent
-        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-        toast("Book added to cart!");
-        setAlreadyInCart(alreadyInCart + 1)
-        console.log(alreadyInCart);
-        
-        
-    }else{
+      setCartItems(updatedCart);
+      // Save the updated cart to localStorage to keep the data persistent
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      toast("Book added to cart!");
+      setAlreadyInCart(alreadyInCart + 1);
+      console.log(alreadyInCart);
+    } else {
       console.log("item not addded");
-      
     }
-
   }
   return (
     <>
@@ -110,7 +110,14 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
                 />
               </div>
               <div className="textDiv">
-                <p className="font-semibold">
+                <div>
+                  {authors.map((author) => (
+                    <h2 className="text-black text-xl font-semibold">
+                      Author: {author.name}
+                    </h2>
+                  ))}
+                </div>
+                <p>
                   Subtitle:{" "}
                   {bookInfo.subtitle
                     ? bookInfo.subtitle
@@ -121,8 +128,7 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
                 <p>Publish date: {bookInfo.publish_date}</p>
                 <p>No of pages: {bookInfo.number_of_pages}</p>
                 <p className="font-semibold text-black">
-                  {/* Price: 200dols */}
-                  ${bookInfo.title.length}
+                  Price: ${bookInfo.title.length}
                 </p>
                 <button
                   className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold"
@@ -130,10 +136,9 @@ export const BookDetails = ({ alreadyInCart, setAlreadyInCart }) => {
                 >
                   Add to cart
                   <ShoppingOutlined className="ml-2" />
-                  
                 </button>
                 <ToastContainer position="top-left" />
-                {/* <button className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold ml-3">
+                {/* <button className="px-10 py-2 text-white bg-green-900 rounded-lg mt-3 font-semibold">
                   Buy now
                   <DollarOutlined className="ml-2" />
                 </button> */}
