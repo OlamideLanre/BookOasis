@@ -8,9 +8,15 @@ export const Footer = () => {
           <Link to="/aboutus" className="link link-hover">
             About us
           </Link>
-          <Link className="link link-hover" to="/termsofuse">Terms of use</Link>
-          <Link className="link link-hover" to="/termsofuse">Cookie policy</Link>
-          <Link className="link link-hover" to="/termsofuse">FAQs</Link>
+          <Link className="link link-hover" to="/termsofuse">
+            Terms of use
+          </Link>
+          <Link className="link link-hover" to="/termsofuse">
+            Cookie policy
+          </Link>
+          <Link className="link link-hover" to="/termsofuse">
+            FAQs
+          </Link>
         </nav>
         <nav>
           <div className="grid grid-flow-col gap-4">
@@ -49,14 +55,13 @@ export const Footer = () => {
             </a>
           </div>
         </nav>
-    
+
         <nav>
-          <div className="grid grid-flow-col gap-5">
+          <div className="">
             <div className="contact-content">
               <div className="imagediv w-6 ml-auto mr-auto mb-2">
                 <img src="placeholder.png" alt="" srcset="" />
               </div>
-              {/* <h3>ADDRESS</h3> */}
               <p>
                 No 5D EKHOUSE KANTA <br /> ROAD,KADUNA NIGERIA.
               </p>
@@ -65,7 +70,6 @@ export const Footer = () => {
               <div className="imagediv w-6 ml-auto mr-auto mb-2">
                 <img src="phone-call.png" alt="" srcset="" />
               </div>
-              {/* <h3>PHONE</h3> */}
               <p>+234 802 071 5266</p>
               <p>+234 916 122 3200</p>
             </div>
@@ -73,13 +77,11 @@ export const Footer = () => {
               <div className="imagediv w-6 ml-auto mr-auto mb-2">
                 <img src="gmail.png" alt="" srcset="" />
               </div>
-              {/* <h3>EMAIL</h3> */}
               <p>bookoasisng@gmail.com</p>
-              {/* <p>akinniyishola07@gmail.com</p> */}
             </div>
           </div>
         </nav>
-          
+
         <aside>
           <p>
             {" "}
